@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: #0D1117;
+}
+
+/* navbar */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #111;
+  }
+
+.box {
+    display: inline-flex;   
+    background-color: #161b22;
+    color: white;
+    padding: 10px 10px;
+    border: 1px solid #262a2f;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.readContainer {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.readbox {
+    display: inline-flex;
+    background-color: #161b22;
+    color: white;
+    max-width: fit-content;
+    max-height: fit-content;
+
+    border: 1px solid #262a2f;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    flex-direction: row;
+}
+
+.readOutBox {
+    
+}
