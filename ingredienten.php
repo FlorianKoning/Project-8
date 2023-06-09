@@ -2,15 +2,17 @@
 <?php
 include_once 'dbh.php';
 
-class Ingredienten extends Dbh {
-    
+class Ingredienten extends Dbh
+{
+
     public string $ingredName;
     public string $ingredDescription;
     public string $ingredType;
     public string $ingredAlcohol;
     public int $ingredID;
 
-    public function __construct($ingredName = "", $ingredDescription = "", $ingredType = "", $ingredAlcohol = "", $ingredID = 0) {
+    public function __construct($ingredName = "", $ingredDescription = "", $ingredType = "", $ingredAlcohol = "", $ingredID = 0)
+    {
         $this->ingredName = $ingredName;
         $this->ingredDescription = $ingredDescription;
         $this->ingredType = $ingredType;
@@ -18,9 +20,12 @@ class Ingredienten extends Dbh {
         $this->ingredID = $ingredID;
     }
 
-    function create($ingredID, $ingredName, $ingredDescription, $ingredType, $ingredAlcohol) {
+    function create($ingredID, $ingredName, $ingredDescription, $ingredType, $ingredAlcohol)
+    {
         // zorgt er voor dat er alleen ja of nee kan ingevult worden
-        if ($ingredAlcohol != "ja" || $ingredAlcohol != "nee") {
+        if ($ingredAlcohol == "ja" || $ingredAlcohol == "nee") {
+            "<script>console.log('Er zit alchohol in.')</script>";
+        } else {
             echo "<script>alert('Je kan alleen Ja of Nee invullen bij of er alcohol inzit!')</script>";
             return;
         }
@@ -30,7 +35,7 @@ class Ingredienten extends Dbh {
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute([$ingredName]);
 
-        if($stmt->fetch()) {
+        if ($stmt->fetch()) {
             // zit het ingredient al in de database stop de function
             echo "<script>allert('Ingredient bestaat al')</script>";
             return;
@@ -41,38 +46,62 @@ class Ingredienten extends Dbh {
             $stmt = $this->connect()->prepare($sql);
 
             // checkt of het gelukt is ingredient te maken
-            $stmt->execute([ $ingredName, $ingredDescription, $ingredType, $ingredAlcohol]);
+            $stmt->execute([$ingredName, $ingredDescription, $ingredType, $ingredAlcohol]);
             if ($stmt) {
                 echo "<script>console.log('ingredient toegevoegt.')</script>";
+                echo "<script>alert('Nieuw Ingredient aangemaakt')</script>";
             } else {
                 echo "<script>console.log('Er is iets fout gegaan, kon niet de ingrediënts toevoegen.')</script>";
             }
         }
-
     }
 
-    static function readAll() {
-        return Ingredienten::SelectGeneric("SELECT * FROM ingrediënts", []);
-    }
-
-    static private function SelectGeneric( $SQL, $values){
-        $db = new Dbh();
-        $stmt = $db->connect()->prepare($SQL);
-        $stmt->execute($values);
-
-        $totalList = [];
-        while ($row = $stmt->fetch()) { 
-            $item = new Ingredienten($row["ingredName"], $row["ingredDescription"], $row["ingredType"], $row["ingredAlcohol"], $row["ingredID"]);
-            array_push($totalList, $item);
+    function update($ingredName, $ingredDescription, $ingredType, $ingredAlcohol, $ingredID)
+    {
+        if ($ingredID <= 0) {
+            echo "<script>alert('kan niet een id invoeren van nul of lager dan nul!')</script>";
         }
-        return $totalList;
+
+        if ($ingredAlcohol != "ja" || $ingredAlcohol != "nee") {
+            echo "<script>alert('je kan alleen ja of nee invullen alcohol')</script>";
+        }
+
+        // SQL code om het ingredient te updaten.
+        $sql = "UPDATE ingrediënts SET ingredName = ?,ingredDescription = ?, ingredType = ?, ingredAlcohol = ? 
+        WHERE ingredID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$ingredName, $ingredDescription, $ingredType, $ingredAlcohol, $ingredID]);
     }
 
-    static function searchName($ingredName) {
-        return Ingredienten::SelectGeneric("SELECT * FROM ingrediënts WHERE ? = ingredName", [$ingredName]);
+    function readAll()
+    {
+        $sql = "SELECT * FROM `ingrediënts`";
+        $stmt = $this->connect()->query($sql);
+
+        while ($row = $stmt->fetch()) {
+            echo "<div class='readbox' style='color: white; max-width: 300px;'>";
+            echo "Naam: " .  $row['ingredName'] . ', <br>';
+            echo "Beschrijving: " . $row['ingredDescription'] . ', <br>';
+            echo "Ingredient type: " .  $row['ingredType'] . ', <br>';
+            echo "Alcohol: " .  $row['ingredAlcohol'] . ', <br>';
+            echo "Ingredient ID: " .  $row['ingredID'] . ', <br>';
+            echo "</div><br>";
+        }
     }
 
-    function delete($ingredID) {
+    function searchID($ingredName)
+    {
+        $sql = "SELECT ingredID FROM ingrediënts WHERE ? = ingredName";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$ingredName]);
+
+        if ($row = $stmt->fetch()) {
+            echo $row['ingredID'];
+        }
+    }
+
+    function delete($ingredID)
+    {
         $sql = "DELETE FROM ingrediënts WHERE ingredID = ?";
         $stmt = $this->connect()->prepare($sql);
 
@@ -84,6 +113,16 @@ class Ingredienten extends Dbh {
         }
     }
 
-    function nameFound($ingredName) {
+    function nameFound($ingredName)
+    {
+        $sql = "SELECT ingredName FROM ingrediënts WHERE ? = ingredName";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$ingredName]);
+
+        if ($row = $stmt->fetch()) {
+            echo "Name was found: " . $row['ingredName'];
+        } else {
+            echo "No name was found as: " . $ingredName;
+        }
     }
 }

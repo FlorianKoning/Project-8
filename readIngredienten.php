@@ -1,9 +1,10 @@
 <?php
-    include_once 'ingredienten.php';
+include_once 'ingredienten.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,23 +12,22 @@
     <link rel="stylesheet" href="style.css">
     <title>Project Website | Read Ingredienten</title>
 </head>
+
 <body>
 
-<!-- navbar -->
-<ul>
-  <li><a class="active" href="index.php">Home</a></li>
-  <li><a href="readIngredienten.php">Read</a></li>
-</ul>
+    <!-- navbar -->
+    <ul>
+        <li><a class="active" href="index.php">Home</a></li>
+        <li><a href="readIngredienten.php">Read</a></li>
+    </ul>
 
-<div class="readContainer">
-    <div class="readbox" style="color: white;">
+    <div class="readContainer">
         <?php
         $object = new Ingredienten();
         $object->readAll();
-        
         ?>
     </div>
-</div>
 
 </body>
+
 </html>
