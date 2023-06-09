@@ -60,10 +60,12 @@ class Ingredienten extends Dbh
     {
         if ($ingredID <= 0) {
             echo "<script>alert('kan niet een id invoeren van nul of lager dan nul!')</script>";
+            return;
         }
 
         if ($ingredAlcohol != "ja" || $ingredAlcohol != "nee") {
             echo "<script>alert('je kan alleen ja of nee invullen alcohol')</script>";
+            return;
         }
 
         // SQL code om het ingredient te updaten.
@@ -123,6 +125,23 @@ class Ingredienten extends Dbh
             echo "Name was found: " . $row['ingredName'];
         } else {
             echo "No name was found as: " . $ingredName;
+        }
+    }
+
+    function searchIngredient($ingredID)
+    {
+        $sql = "SELECT * FROM ingrediënts WHERE ? = ingredID";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$ingredID]);
+
+        while ($row = $stmt->fetch()) {
+            echo "<div class='readbox' style='color: white; max-width: 300px; display: flex;'>";
+            echo "Naam: " .  $row['ingredName'] . ', <br>';
+            echo "Beschrijving: " . $row['ingredDescription'] . ', <br>';
+            echo "Ingredient type: " .  $row['ingredType'] . ', <br>';
+            echo "Alcohol: " .  $row['ingredAlcohol'] . ', <br>';
+            echo "Ingredient ID: " .  $row['ingredID'] . ', <br>';
+            echo "</div><br>";
         }
     }
 }

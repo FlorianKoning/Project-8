@@ -118,14 +118,18 @@ include_once 'ingredienten.php';
             $ingredAlcohol = $_POST['updateAlcohol'];
             $ingredID = $_POST['updateID'];
 
-
             $object->update($ingredName, $ingredDescription, $ingredType, $ingredAlcohol, $ingredID);
         }
         ?>
     </div><br><br>
 
-
-
+    <div class="box">
+        <h3>Searchbar, opzoeken op ID.</h3>
+        <form action="SearchID.php" method="POST">
+            <input name="searchID" type="text" placeholder="Search...">
+            <button type="submit" name="searchSubmit">Submit</button>
+        </form>
+    </div><br><br>
 </body>
 
 </html>

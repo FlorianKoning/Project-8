@@ -55,6 +55,7 @@ li a:hover {
   flex-wrap: wrap;
   align-items: stretch;
   margin-top: 10px;
+  align-content: center;
 }
 
 
