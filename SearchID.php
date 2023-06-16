@@ -24,7 +24,7 @@ include_once 'ingredienten.php';
         if (isset($_POST['searchSubmit'])) {
             $ingredID = $_POST['searchID'];
 
-            $object->searchIngredient($ingredID);
+            $object->searchIngredientID($ingredID);
         }
         ?>
     </div>

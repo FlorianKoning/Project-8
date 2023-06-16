@@ -100,27 +100,10 @@ include_once 'ingredienten.php';
 
     <div class="box">
         <h3>Update Ingredient op ID</h3>
-        <form method="POST">
-            <label for="updatenName">type hier de naam </label><input placeholder="Naam" type="text" name="updatenName"><br>
-            <label for="updatenDescription">type hier de beschrijving </label><input placeholder="Beschrijving" type="text" name="updatenDescription"><br>
-            <label for="updateType">type hier het type ingredient </label><input placeholder="Type" type="text" name="updateType"><br>
-            <label for="updateAlcohol">type hier het type ingredient </label><input placeholder="Alcohol" type="text" name="updateAlcohol"><br>
-            <label for="updateID">type hiere de ID </label><input placeholder="ID" type="text" name="updateID"><br>
-            <button type="submit" name="submitUpdate">Submit</button>
+        <form action="updateIngredienten.php" method="POST">
+            <label for="ID">Type hier de id</label><input placeholder="ID hier" type="text" name="ID">
+            <button type="submit" name="submitUpdateID">Submit</button>
         </form>
-
-        <?php
-        $object = new Ingredienten();
-        if (isset($_POST['submitUpdate'])) {
-            $ingredName = $_POST['updatenName'];
-            $ingredDescription = $_POST['updatenDescription'];
-            $ingredType = $_POST['updateType'];
-            $ingredAlcohol = $_POST['updateAlcohol'];
-            $ingredID = $_POST['updateID'];
-
-            $object->update($ingredName, $ingredDescription, $ingredType, $ingredAlcohol, $ingredID);
-        }
-        ?>
     </div><br><br>
 
     <div class="box">

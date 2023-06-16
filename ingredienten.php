@@ -23,9 +23,7 @@ class Ingredienten extends Dbh
     function create($ingredID, $ingredName, $ingredDescription, $ingredType, $ingredAlcohol)
     {
         // zorgt er voor dat er alleen ja of nee kan ingevult worden
-        if ($ingredAlcohol == "ja" || $ingredAlcohol == "nee") {
-            "<script>console.log('Er zit alchohol in.')</script>";
-        } else {
+        if ($ingredAlcohol != "ja" || $ingredAlcohol != "nee") {
             echo "<script>alert('Je kan alleen Ja of Nee invullen bij of er alcohol inzit!')</script>";
             return;
         }
@@ -37,7 +35,7 @@ class Ingredienten extends Dbh
 
         if ($stmt->fetch()) {
             // zit het ingredient al in de database stop de function
-            echo "<script>allert('Ingredient bestaat al')</script>";
+            echo "<script>al    ert('Ingredient bestaat al')</script>";
             return;
         } else {
             // zit de ingredient er nog niet in dan word het ingredient aangemaakt
@@ -58,13 +56,9 @@ class Ingredienten extends Dbh
 
     function update($ingredName, $ingredDescription, $ingredType, $ingredAlcohol, $ingredID)
     {
-        if ($ingredID <= 0) {
-            echo "<script>alert('kan niet een id invoeren van nul of lager dan nul!')</script>";
-            return;
-        }
-
-        if ($ingredAlcohol != "ja" || $ingredAlcohol != "nee") {
-            echo "<script>alert('je kan alleen ja of nee invullen alcohol')</script>";
+         // zorgt er voor dat er alleen ja of nee kan ingevult worden
+         if ($ingredAlcohol != "ja" || $ingredAlcohol != "nee") {
+            echo "<script>alert('Je kan alleen Ja of Nee invullen bij of er alcohol inzit!')</script>";
             return;
         }
 
@@ -73,6 +67,11 @@ class Ingredienten extends Dbh
         WHERE ingredID = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute([$ingredName, $ingredDescription, $ingredType, $ingredAlcohol, $ingredID]);
+        if ($stmt) {
+            echo "<script>alert('ingrediënts zijn geupdate')</script>";
+        } else {
+            echo "<script>console.log('Er is iets fout gegaan, kon niet de ingrediënts toevoegen.')</script>";
+        }
     }
 
     function readAll()
@@ -128,7 +127,7 @@ class Ingredienten extends Dbh
         }
     }
 
-    function searchIngredient($ingredID)
+    function searchIngredientID($ingredID)
     {
         $sql = "SELECT * FROM ingrediënts WHERE ? = ingredID";
         $stmt = $this->connect()->prepare($sql);
@@ -142,6 +141,54 @@ class Ingredienten extends Dbh
             echo "Alcohol: " .  $row['ingredAlcohol'] . ', <br>';
             echo "Ingredient ID: " .  $row['ingredID'] . ', <br>';
             echo "</div><br>";
+        }
+    }
+
+    function searchIngredientName($ingredName)
+    {
+        $sql = "SELECT * FROM ingrediënts WHERE ? = ingredName";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$ingredName]);
+
+        while ($row = $stmt->fetch()) {
+            echo "<div class='readbox' style='color: white; max-width: 300px; display: flex;'>";
+            echo "Naam: " .  $row['ingredName'] . ', <br>';
+            echo "Beschrijving: " . $row['ingredDescription'] . ', <br>';
+            echo "Ingredient type: " .  $row['ingredType'] . ', <br>';
+            echo "Alcohol: " .  $row['ingredAlcohol'] . ', <br>';
+            echo "Ingredient ID: " .  $row['ingredID'] . ', <br>';
+            echo "</div><br>";
+        }
+    }
+
+    function searchIngredientDiscription($ingredDescription)
+    {
+        $sql = "SELECT * FROM ingrediënts WHERE ? = ingredDescription";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$ingredDescription]);
+
+        while ($row = $stmt->fetch()) {
+            echo "<div class='readbox' style='color: white; max-width: 300px; display: flex;'>";
+            echo "Naam: " .  $row['ingredName'] . ', <br>';
+            echo "Beschrijving: " . $row['ingredDescription'] . ', <br>';
+            echo "Ingredient type: " .  $row['ingredType'] . ', <br>';
+            echo "Alcohol: " .  $row['ingredAlcohol'] . ', <br>';
+            echo "Ingredient ID: " .  $row['ingredID'] . ', <br>';
+            echo "</div><br>";
+        }
+    }
+
+    public function getValuesWithID($ingredID) {
+        $sql = "SELECT * FROM ingrediënts WHERE ? = ingredID";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$ingredID]);
+
+        while ($row = $stmt->fetch()) {
+            $this->ingredID = $row['ingredID'];
+            $this->ingredName = $row['ingredName'];
+            $this->ingredDescription = $row['ingredDescription'];
+            $this->ingredType = $row['ingredType'];
+            $this->ingredAlcohol = $row ['ingredAlcohol'];
         }
     }
 }
